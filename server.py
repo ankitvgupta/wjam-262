@@ -7,16 +7,23 @@ tasks = [
     {
         'id': 1,
         'title': u'Buy groceries',
-        'description': u'Milk, Cheese, Pizza, Fruit, Tylenol', 
+        'description': u'Milk, Cheese, Pizza, Fruit, Tylenol',
         'done': False
     },
     {
         'id': 2,
         'title': u'Learn Python',
-        'description': u'Need to find a good Python tutorial on the web', 
+        'description': u'Need to find a good Python tutorial on the web',
         'done': False
     }
 ]
+
+# userId -> user object
+users    = {}
+# groupId -> list of userIds
+groups   = {}
+# userId -> pending messages
+messages = {}
 
 @app.route("/")
 def hello():
