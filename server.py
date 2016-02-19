@@ -18,13 +18,6 @@ tasks = [
     }
 ]
 
-# userId -> user object
-users    = {}
-# groupId -> list of userIds
-groups   = {}
-# userId -> pending messages
-messages = {}
-
 @app.route("/")
 def hello():
     return render_template('index.html')
