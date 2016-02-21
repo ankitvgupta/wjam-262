@@ -11,8 +11,8 @@ else:
 # Initialize stub
 # Initialize processor
 
-@app.route('/', defaults={'path': ''})
-@app.route('/<path:path>')
+@app.route('/', defaults={'path': ''}, methods=['GET', 'POST', 'DELETE'])
+@app.route('/<path:path>', methods=['GET', 'POST', 'DELETE'])
 def catch_all(path):
     request_object = stub.decode(path, request)
     #if request_object["type"] == TYPEA
