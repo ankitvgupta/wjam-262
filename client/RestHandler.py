@@ -7,8 +7,10 @@ REQUEST_URL = 'https://wjam-262.herokuapp.com'
 def sendRequest(path, method):
     def wrap(f):
         def wrapped_f(*args):
+            data = f(*args)
             print REQUEST_URL + path
-            print requests.request(method, REQUEST_URL + path, data=f(*args)).text
+            print data
+            print requests.request(method, REQUEST_URL + path, data=data).text
         return wrapped_f                            
     return wrap
 
@@ -39,7 +41,7 @@ class RestHandler(BaseHandler):
             'groupusers': usernames })
 
     def get(self):
-        print requests.get('/users/' + self.username + '/messages', data=self.req_dict()).text
+        print requests.get(REQUEST_URL + '/users/' + self.username + '/messages', data=self.req_dict()).text
 
     def send_user(self, username, message):
         return self.send_generic(username, message, False)
@@ -48,7 +50,7 @@ class RestHandler(BaseHandler):
         return self.send_generic(groupname, message, True)
     
     def send_generic(self, name, message, is_group):
-        print requests.post('/users/' + name + '/messages', data=self.req_dict({ 'message': message })).text
+        print requests.post(REQUEST_URL + '/users/' + name + '/messages', data=self.req_dict({ 'message': message })).text
     
     @sendRequest('/users', 'DELETE')
     def delete(self):
