@@ -1,9 +1,11 @@
 import os
+import sys
 from flask import Flask, render_template, request, jsonify
+from RestAPIStub import RestAPIStub
 
 app = Flask(__name__)
 
-if sys.argv[2] == 'rest':
+if sys.argv[1] == 'rest':
     stub = RestAPIStub()
 else:
     stub = WireProtocolStub()

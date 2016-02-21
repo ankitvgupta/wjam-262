@@ -3,6 +3,8 @@ import struct
 import requests
 
 REQUEST_URL = 'https://wjam-262.herokuapp.com'
+# REQUEST_URL = 'http://0.0.0.0:8080'
+
 def sendRequest(command_type):
     def wrap(f):
         def wrapped_f(*args):

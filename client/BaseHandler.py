@@ -7,10 +7,10 @@ class BaseHandler:
     
     def print_usage(self):
         print """Commands:
-                    list (users|groups) [search_text]
-                    send (user|group) (username|groupname) message
+                    list (users|groups) [SEARCH_TEXT]
+                    send (user|group) (USERNAME|GROUPNAME) MESSAGE
                     get
-                    group username1 username2 ...
+                    group GROUPNAME USERNAME1 USERNAME2 ...
                     delete
                     exit"""
 
@@ -51,10 +51,10 @@ class BaseHandler:
                     continue
                 
             elif args[0] == 'group':
-                if len(args) < 2:
+                if len(args) < 3:
                     self.print_usage()
                     continue
-                self.group(args[1:])
+                self.group(args[1], args[2:])
                 
             elif args[0] == 'delete':
                 self.delete()
