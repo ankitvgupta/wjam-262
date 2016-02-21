@@ -21,6 +21,7 @@ def check_usage():
 if __name__ == '__main__':
     check_usage()
     
+    # if registering a new user
     if len(sys.argv) == 5:
         username = sys.argv[3]
         password = sys.argv[4]
@@ -33,8 +34,10 @@ if __name__ == '__main__':
     elif sys.argv[1] == 'wire':
         handler = WireHandler(username, password)
 
+    # if registering a new user, we must call for it here
     if len(sys.argv) == 5:
         handler.register()
-    
+
+    # ready to receive instructions
     handler.get_command()
     
