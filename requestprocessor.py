@@ -2,11 +2,13 @@ class RequestProcessor:
 
     def __init__(self):
         # userId -> user object
-        self.users    = {}
-        # groupId -> list of userIds
-        self.groups   = {}
+        self.users      = {}
+        # groupId -> name, list of userIds
+        self.groups     = {}
         # userId -> pending messages
-        self.messages = {}
+        self.messages   = {}
+        # for constant time reference
+        self.groupNames = set()
 
     def get_next_id(self, dictionary):
         if len(dictionary) == 0:
@@ -14,10 +16,14 @@ class RequestProcessor:
         return max(dictionary) + 1
 
     def register_user(self, request_object):
+        if request_object["username"] in self.groupNames:
+            return { "success" : False, "response" : "Username is already taken." }
+
         next_user_id                = self.get_next_id(self.users)
         self.users[next_user_id]    = { "username" : request_object["username"], "password" : request_object["password"] }
         next_group_id               = self.get_next_id(self.groups)
         self.groups[next_group_id]  = { "name" : request_object["username"], "users" : [next_user_id] }
+        self.groupNames.add(request_object["username"])
         self.messages[next_user_id] = []
         return { "success" : True, "response" : None }
 
@@ -28,8 +34,12 @@ class RequestProcessor:
         return { "success" : True, "response" : response }
 
     def create_group(self, request_object):
+        if request_object["name"] in self.groupNames:
+            return { "success" : False, "response" : "Group name is already taken." }
+
         next_id = self.get_next_id(self.groups)
         self.groups[next_id] = { "name" : request_object["name"], "users" : request_object["users"] }
+        self.groupNames.add(request_object["name"])
         return { "success" : True, "response" : None }
 
     def list_groups(self, request_object):
@@ -68,6 +78,7 @@ class RequestProcessor:
                     empty_groups.append(group_id)
 
         for group_id in empty_groups:
+            self.groupNames.remove(self.groups[group_id]["name"])
             del self.groups[group_id]
 
         del self.messages[user_id]
