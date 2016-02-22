@@ -2,6 +2,7 @@ import os
 import sys
 from flask import Flask, render_template, request, jsonify
 from RestAPIStub import RestAPIStub
+from requestprocessor import RequestProcessor
 
 app = Flask(__name__)
 
@@ -10,13 +11,15 @@ if sys.argv[1] == 'rest':
 else:
     stub = WireProtocolStub()
 
-# Initialize stub
-# Initialize processor
+request_processor = RequestProcessor()
 
 @app.route('/', defaults={'path': ''}, methods=['GET', 'POST', 'DELETE'])
 @app.route('/<path:path>', methods=['GET', 'POST', 'DELETE'])
 def catch_all(path):
     request_object = stub.decode(path, request)
+    
+    if request_object["type"] == 'list':
+        
     #if request_object["type"] == TYPEA
     #    request_processor.TYPEA()
 

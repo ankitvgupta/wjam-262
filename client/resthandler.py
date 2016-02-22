@@ -1,8 +1,8 @@
-from BaseHandler import BaseHandler
+from basehandler import BaseHandler
 import requests
 
-REQUEST_URL = 'https://wjam-262.herokuapp.com'
-# REQUEST_URL = 'http://0.0.0.0:8080'
+# REQUEST_URL = 'https://wjam-262.herokuapp.com'
+REQUEST_URL = 'http://0.0.0.0:8080'
 
 def sendRequest(path, method):
     def wrap(f):

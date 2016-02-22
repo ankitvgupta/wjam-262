@@ -1,7 +1,7 @@
 #!/usr/bin/python
 import sys
-from WireHandler import WireHandler
-from RestHandler import RestHandler
+from wirehandler import WireHandler
+from resthandler import RestHandler
 
 def print_cmd_line_usage():
     print "USAGE: ./client.py (rest|wire) [register] USERNAME PASSWORD"

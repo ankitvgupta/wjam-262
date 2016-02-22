@@ -1,4 +1,4 @@
-from BaseHandler import BaseHandler
+from basehandler import BaseHandler
 import struct
 import requests
 
