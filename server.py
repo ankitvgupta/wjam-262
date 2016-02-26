@@ -13,15 +13,24 @@ else:
 
 request_processor = RequestProcessor()
 
+def process_request(request_object):
+    mapping = {
+        "GetMessages"   : request_processor.get_messages,
+        "SendMessage"   : request_processor.send_message,
+        "ListAccounts"  : request_processor.list_accounts,
+        "DeleteAccount" : request_processor.delete_account,
+        "CreateUser"    : request_processor.register_user,
+        "GetGroups"     : request_processor.list_groups,
+        "CreateGroup"   : request_processor.create_group,
+    }
+    return mapping[request_object["task"]](request_object)
+
 @app.route('/', defaults={'path': ''}, methods=['GET', 'POST', 'DELETE'])
 @app.route('/<path:path>', methods=['GET', 'POST', 'DELETE'])
 def catch_all(path):
     request_object = stub.decode(path, request)
-    
-    if request_object["type"] == 'list':
-        
-    #if request_object["type"] == TYPEA
-    #    request_processor.TYPEA()
+    return_object  = process_request(request_object)
+    # TODO: Process return object.
 
 # @app.route("/")
 # def hello():
