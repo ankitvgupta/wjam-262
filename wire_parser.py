@@ -2,6 +2,7 @@ import io
 import binascii
 import struct
 
+#TODO add version to everything?
 # Takes in a string representation of http binary field
 def bytestream_to_request(b):
     type = struct.unpack("<B", b[0])[0]

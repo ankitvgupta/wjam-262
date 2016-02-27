@@ -4,6 +4,7 @@ import requests
 
 REQUEST_URL = 'https://wjam-262.herokuapp.com'
 # REQUEST_URL = 'http://0.0.0.0:8080'
+version = 0
 
 def sendRequest(command_type):
     def wrap(f):
@@ -16,13 +17,13 @@ def sendRequest(command_type):
 # defined per the design https://docs.google.com/document/d/1gF_5esZ2cq-pECmQuPqit8FXHTf76Y9pqLyGkCfK5Rc/edit
 class WireHandler(BaseHandler):
 
-    # returns 4 bytes: length of username; length bytes: username
+    # returns 4 + len(username) bytes: length of username; length bytes: username
     def username_bytes(self):
         return struct.pack("I", len(self.username)) + bytearray(self.username)
 
     @sendRequest(0)
     def register(self):
-        return self.username_bytes()
+        return struct.pack("I", 0) + self.username_bytes()
         + struct.pack("I", len(self.password))
         + bytearray(password)
         
