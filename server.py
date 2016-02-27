@@ -2,6 +2,7 @@ import os
 import sys
 from flask import Flask, render_template, request, jsonify
 from RestAPIStub import RestAPIStub
+from WireProtocolStub import WireProtocolStub
 from requestprocessor import RequestProcessor
 
 app = Flask(__name__)
