@@ -2,27 +2,27 @@ from basehandler import BaseHandler
 import requests
 import json
 
-# import logging
+import logging
 
-# # These two lines enable debugging at httplib level (requests->urllib3->http.client)
-# # You will see the REQUEST, including HEADERS and DATA, and RESPONSE with HEADERS but without DATA.
-# # The only thing missing will be the response.body which is not logged.
-# try:
-#     import http.client as http_client
-# except ImportError:
-#     # Python 2
-#     import httplib as http_client
-# http_client.HTTPConnection.debuglevel = 1
+# These two lines enable debugging at httplib level (requests->urllib3->http.client)
+# You will see the REQUEST, including HEADERS and DATA, and RESPONSE with HEADERS but without DATA.
+# The only thing missing will be the response.body which is not logged.
+try:
+    import http.client as http_client
+except ImportError:
+    # Python 2
+    import httplib as http_client
+http_client.HTTPConnection.debuglevel = 1
 
-# # You must initialize logging, otherwise you'll not see debug output.
-# logging.basicConfig() 
-# logging.getLogger().setLevel(logging.DEBUG)
-# requests_log = logging.getLogger("requests.packages.urllib3")
-# requests_log.setLevel(logging.DEBUG)
-# requests_log.propagate = True
+# You must initialize logging, otherwise you'll not see debug output.
+logging.basicConfig() 
+logging.getLogger().setLevel(logging.DEBUG)
+requests_log = logging.getLogger("requests.packages.urllib3")
+requests_log.setLevel(logging.DEBUG)
+requests_log.propagate = True
 
 # REQUEST_URL = 'https://wjam-262.herokuapp.com'
-REQUEST_URL = 'http://0.0.0.0:5000'
+REQUEST_URL = 'http://0.0.0.0:8080'
 
 def sendRequest(path, method):
     def wrap(f):
@@ -59,7 +59,7 @@ class RestHandler(BaseHandler):
             'groupusers': usernames })
 
     def get(self):
-        print requests.get(REQUEST_URL + '/users/' + self.username + '/messages', data=self.req_dict()).text
+        print requests.get(REQUEST_URL + '/users/' + self.username + '/messages', data=json.dumps(self.req_dict())).text
 
     def send_user(self, username, message):
         return self.send_generic(username, message, False)
@@ -68,7 +68,7 @@ class RestHandler(BaseHandler):
         return self.send_generic(groupname, message, True)
     
     def send_generic(self, name, message, is_group):
-        print requests.post(REQUEST_URL + '/users/' + name + '/messages', data=self.req_dict({ 'message': message })).text
+        print requests.post(REQUEST_URL + '/users/' + name + '/messages', data=json.dumps(self.req_dict({ 'message': message }))).text
     
     @sendRequest('/users', 'DELETE')
     def delete(self):

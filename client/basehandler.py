@@ -10,6 +10,7 @@ class BaseHandler:
                     list (users|groups) [SEARCH_TEXT]
                     send (user|group) (USERNAME|GROUPNAME) MESSAGE
                     get
+                    register
                     group GROUPNAME USERNAME1 USERNAME2 ...
                     delete
                     exit"""
@@ -19,7 +20,10 @@ class BaseHandler:
             command = raw_input("Enter command: ")
             args = command.split(' ')
             
-            if args[0] == 'list':
+            if args[0] == 'register':
+                self.register()
+                
+            elif args[0] == 'list':
                 if len(args) == 2:
                     search_text = None
                 elif len(args) == 3:
