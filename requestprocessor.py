@@ -10,7 +10,9 @@ class RequestProcessor:
         # userId -> pending messages
         self.messages   = {}
         # for constant time reference
-        self.groupNames = set()
+        self.groupNames = {}
+        # for username -> userId
+        self.usernames  = {}
 
     def get_next_id(self, dictionary):
         if len(dictionary) == 0:
@@ -24,15 +26,27 @@ class RequestProcessor:
         before_star = matchstring.split('*')[0]
         return string[:len(before_star)] == before_star
 
+    def validate_user(self, request_object):
+        username = request_object["username"]
+        if username not in self.usernames:
+            return { "success" : False, "response" : "User does not exist." }
+
+        user_id = self.usernames[username]
+        if self.users[user_id]["password"] != request_object["password"]:
+            return { "success" : False, "response" : "Invalid password." }
+
+        return { "success" : True, "response" : "Success!" }
+
     def register_user(self, request_object):
         if request_object["username"] in self.groupNames:
             return { "success" : False, "response" : "Username is already taken." }
 
         next_user_id                = self.get_next_id(self.users)
         self.users[next_user_id]    = { "username" : request_object["username"], "password" : request_object["password"] }
+        self.usernames[request_object["username"]] = next_user_id
         next_group_id               = self.get_next_id(self.groups)
         self.groups[next_group_id]  = { "name" : request_object["username"], "users" : [next_user_id] }
-        self.groupNames.add(request_object["username"])
+        self.groupNames[request_object["username"]] = next_group_id
         self.messages[next_user_id] = []
         return { "success" : True, "response" : None }
 
@@ -54,7 +68,7 @@ class RequestProcessor:
 
         next_id = self.get_next_id(self.groups)
         self.groups[next_id] = { "name" : request_object["name"], "users" : request_object["users"] }
-        self.groupNames.add(request_object["name"])
+        self.groupNames[request_object["name"]] = next_id
         return { "success" : True, "response" : None }
 
     def list_groups(self, request_object):
@@ -67,20 +81,29 @@ class RequestProcessor:
 
     # TODO Stub and Client uses names and not ids
     def send_message(self, request_object):
-        group_id = request_object["groupname"]
-        
-        if group_id not in self.groups:
-            return { "success" : False, "response" : "Group ID does not exist." }
+        validation = self.validate_user(request_object)
+        if not validation["success"]:
+            return validation
+
+        group_name = request_object["groupname"]
+
+        if group_name not in self.groupNames:
+            return { "success" : False, "response" : "Group does not exist." }
+
+        group_id = self.groupNames[group_name]
 
         for user_id in self.groups[group_id]['users']:
-            self.messages[user_id].append(request_object['message'])
+            self.messages[user_id].append('%s: %s' % (request_object["username"], request_object["message"]))
+
+        return { "success" : True, "response" : "Message sent." }
 
     # TODO Stub and Client uses names and not ids
     def get_messages(self, request_object):
-        user_id  = request_object['username']
+        validation = self.validate_user(request_object)
+        if not validation["success"]:
+            return validation
 
-        if user_id not in self.messages:
-            return { "success" : False, "response" : "User ID does not exist." }
+        user_id = self.usernames[request_object["username"]]
 
         messages = self.messages[user_id]
         self.messages[user_id] = []
@@ -88,11 +111,15 @@ class RequestProcessor:
 
     # TODO Stub and Client uses names and not ids
     def delete_account(self, request_object):
-        user_id = request_object['username']
-        if user_id not in self.users:
-            return { "success" : False, "response" : "User does not exist." }
+        validation = self.validate_user(request_object)
+        if not validation["success"]:
+            return validation
+
+        username = request_object["username"]
+        user_id  = self.usernames[username]
 
         del self.users[user_id]
+        del self.usernames[username]
 
         empty_groups = []
         for group_id in self.groups:
@@ -102,7 +129,7 @@ class RequestProcessor:
                     empty_groups.append(group_id)
 
         for group_id in empty_groups:
-            self.groupNames.remove(self.groups[group_id]["name"])
+            del self.groupNames[self.groups[group_id]["name"]]
             del self.groups[group_id]
 
         del self.messages[user_id]
