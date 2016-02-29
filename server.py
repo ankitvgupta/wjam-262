@@ -1,11 +1,13 @@
 import os
 import sys
+import pdb
 from flask import Flask, render_template, request, jsonify
 from RestAPIStub import RestAPIStub
 from WireProtocolStub import WireProtocolStub
 from requestprocessor import RequestProcessor
 
 app = Flask(__name__)
+app.debug = True
 
 if sys.argv[1] == 'rest':
     stub = RestAPIStub()
@@ -29,9 +31,12 @@ def process_request(request_object):
 @app.route('/', defaults={'path': ''}, methods=['GET', 'POST', 'DELETE'])
 @app.route('/<path:path>', methods=['GET', 'POST', 'DELETE'])
 def catch_all(path):
-    request_object = stub.decode(path, request)
-    return_object  = process_request(request_object)
-    # TODO: Process return object.
+    try:
+        request_object = stub.decode(path, request)
+        return_object  = process_request(request_object)
+        return stub.encode(return_object), 200
+    except:
+        return "failure!", 201
 
 # @app.route("/")
 # def hello():

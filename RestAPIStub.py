@@ -1,3 +1,5 @@
+import json
+import pdb
 
 class RestAPIStub:
 	def __init__(self):
@@ -7,6 +9,7 @@ class RestAPIStub:
 		path_values = path.split("/")
 		target = path_values[0]
 		return_object = {}
+<<<<<<< HEAD
 		assert(request.json)
 		if path_values[0] == "users" and request.method == "GET" and len(path) == 1:
 			return_object["username"] = request.json['username']
