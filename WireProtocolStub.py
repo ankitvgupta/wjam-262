@@ -9,18 +9,21 @@ class WireProtocolStub:
     #TODO add version to everything?
     # Takes in a string representation of http binary field
     def decode(self, path, b):
+        print path, b
         b = b.data
         
-        type = struct.unpack("<B", b[0])[0]
+        version = struct.unpack("<i",b[0:4])[0]
+        type = struct.unpack("<B", b[4])[0]
 
         ret_obj = {}
 
         def get_user_pwd(b, ret_obj):
-            usernamelen = struct.unpack("<i", b[1:5])[0]
-            username = b[5:(5 + usernamelen)]
-            passwordlen = struct.unpack("<i", b[5 + usernamelen : 5 + usernamelen + 4])[0]
-            password = b[5 + usernamelen + 4 : 5 + usernamelen + 4 + passwordlen]
-            start = 5 + usernamelen + 4 + passwordlen
+            vtype_start = 4
+            usernamelen = struct.unpack("<i", b[vtype_start + 1:vtype_start + 5])[0]
+            username = b[vtype_start + 5:(vtype_start + 5 + usernamelen)]
+            passwordlen = struct.unpack("<i", b[vtype_start + 5 + usernamelen : vtype_start + 5 + usernamelen + 4])[0]
+            password = b[vtype_start + 5 + usernamelen + 4 : vtype_start + 5 + usernamelen + 4 + passwordlen]
+            start = vtype_start + 5 + usernamelen + 4 + passwordlen
             ret_obj["username"] = username
             ret_obj["password"] = password
             return username, password, start
@@ -52,7 +55,7 @@ class WireProtocolStub:
                 tmpusern = b[init+4:init+4+tmpuserlen]
                 init += 4 + tmpuserlen
                 if i == 0:
-                    ret_obj["groupuseres"] = [tmpusern]
+                    ret_obj["groupusers"] = [tmpusern]
                 else:
                     ret_obj["groupusers"].append(tmpusern)
             ret_obj["task"] = "CreateGroup"
