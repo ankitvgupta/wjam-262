@@ -9,7 +9,7 @@ version = 0
 def sendRequest(command_type):
     def wrap(f):
         def wrapped_f(*args):
-            data = bytearray([command_type]) + f(*args)
+            data = struct.pack("I", version) + bytearray([command_type]) + f(*args)
             print requests.post(REQUEST_URL, data=data).text
         return wrapped_f
     return wrap
@@ -23,7 +23,7 @@ class WireHandler(BaseHandler):
 
     @sendRequest(0)
     def register(self):
-        return struct.pack("I", 0) + self.username_bytes()
+        return self.username_bytes()
         + struct.pack("I", len(self.password))
         + bytearray(password)
         
