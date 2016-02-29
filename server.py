@@ -1,6 +1,7 @@
 import os
 import sys
 import pdb
+import traceback
 from flask import Flask, render_template, request, jsonify
 from RestAPIStub import RestAPIStub
 from WireProtocolStub import WireProtocolStub
@@ -34,9 +35,10 @@ def catch_all(path):
     try:
         request_object = stub.decode(path, request)
         return_object  = process_request(request_object)
-        return stub.encode(return_object), 200
-    except:
-        return "failure!", 201
+        return jsonify(stub.encode(return_object)), 200
+    except Exception,e:
+        traceback.print_exc()
+        return "failure!" + str(e), 201
 
 # @app.route("/")
 # def hello():
