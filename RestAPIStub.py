@@ -1,12 +1,13 @@
 import json
 import pdb
+import flask
 
 class RestAPIStub:
 	def __init__(self):
 		pass
 
 	def encode(self, ret):
-		return ret
+		return flask.jsonify(ret)
 	
 	def decode(self, path, request):
 		path_values = path.split("/")

@@ -35,7 +35,7 @@ def catch_all(path):
     try:
         request_object = stub.decode(path, request)
         return_object  = process_request(request_object)
-        return jsonify(stub.encode(return_object)), 200
+        return stub.encode(return_object), 200
     except Exception,e:
         traceback.print_exc()
         return "failure!" + str(e), 201

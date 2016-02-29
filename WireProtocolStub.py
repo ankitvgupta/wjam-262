@@ -101,7 +101,7 @@ class WireProtocolStub:
 
     def encode(self, response):
         s = response["success"]
-        resp = response["response"]
+        resp = str(response["response"])
         # 0 if success, 1 if failure
         i = 0 if s else 1
         resplen = len(resp)
