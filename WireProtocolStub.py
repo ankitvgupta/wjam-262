@@ -36,15 +36,15 @@ class WireProtocolStub:
 
         elif command_type == 1:
             # list accounts
-            user, pwd, st = get_user_pwd(bytes)
-            matchstringlen = struct.unpack("<i", bytes[1 + start:5 + start])[0]
-            matchstring = bytes[5 + start:5 + matchstringlen + start]
+            user, pwd, st = get_user_pwd(bytes, ret_obj)
+            matchstringlen = struct.unpack("<i", bytes[1 + st:5 + st])[0]
+            matchstring = bytes[5 + st:5 + matchstringlen + st]
             ret_obj["task"] = "ListAccounts"
             return ret_obj
 
         elif command_type == 2:
             # create group
-            user, pwd, st = get_user_pwd(bytes)
+            user, pwd, st = get_user_pwd(bytes, ret_obj)
             num_users = struct.unpack("<i", bytes[st: st + 4])
             groupnamelen = struct.unpack("<i", bytes[st + 4: st + 8])
             groupname = bytes[st + 8:st + 8 + groupnamelen]
@@ -63,14 +63,14 @@ class WireProtocolStub:
 
         elif command_type == 3:
             # list groups
-            user, pwd, st = get_user_pwd(bytes)
+            user, pwd, st = get_user_pwd(bytes,ret_obj)
             # that's all the info we need
             ret_obj["task"] = "GetGroups"
             return ret_obj
 
         elif command_type == 4:
             # send_message
-            user, pwd, st = get_user_pwd(bytes)   
+            user, pwd, st = get_user_pwd(bytes,ret_obj)   
             usr_or_group = struct.unpack("<i", bytes[st : st + 4])
             namelen = struct.unpack("<i", bytes[st+4:st+8])
             name = bytes[st+8:st+ 8 + namelen]
@@ -83,14 +83,14 @@ class WireProtocolStub:
 
         elif command_type == 5:
             #get messages
-            user, pwd, st = get_user_pwd(bytes)
+            user, pwd, st = get_user_pwd(bytes,ret_obj)
             # that's all we need
             ret_obj["task"] = "GetMessages"
             return ret_obj
 
         elif command_type == 6:
             # delete account
-            user, pwd, st = get_user_pwd(bytes)
+            user, pwd, st = get_user_pwd(bytes,ret_obj)
             # that's all we need
             ret_obj["task"] = "DeleteAccount"
             return ret_obj

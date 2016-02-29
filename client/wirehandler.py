@@ -20,17 +20,17 @@ class WireHandler(BaseHandler):
 
     # returns 4 + len(username) bytes: length of username; length bytes: username
     def username_bytes(self):
-        return struct.pack("I", len(self.username)) + bytearray(self.username)
+        return (struct.pack("I", len(self.username)) + bytearray(self.username) + struct.pack("I", len(self.password)) + bytearray(self.password))
 
     @sendRequest(0)
     def register(self):
-        return (self.username_bytes()
-        + struct.pack("I", len(self.password))
-        + bytearray(self.password))
+        return self.username_bytes()
         
     @sendRequest(1)
     def list_users(self, text):
-        return (struct.pack("I", len(text))
+        text = "" if text is None else text
+        return (self.username_bytes()
+        + struct.pack("I", len(text))
         + bytearray(text))
 
     def list_groups(self, text):
@@ -53,7 +53,8 @@ class WireHandler(BaseHandler):
         return self.send_generic(groupname, message, True)
     
     def send_generic(self, name, message, is_group):
-        return ((bytearray([1]) if is_group else bytearray([0]))
+        return (self.username_bytes()
+        + (bytearray([1]) if is_group else bytearray([0]))
         + struct.pack("I", len(name))
         + bytearray(name)
         + struct.pack("I", len(message))
