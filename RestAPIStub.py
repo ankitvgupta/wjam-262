@@ -8,7 +8,34 @@ class RestAPIStub:
 		target = path_values[0]
 		return_object = {}
 		assert(request.json)
-		if path_values[0] == "users" and path_values[2] == "messages" and request.method == "GET":
+		if path_values[0] == "users" and request.method == "GET" and len(path) == 1:
+			return_object["username"] = request.json['username']
+			return_object["password"] = request.json['password']
+			return_object["task"] = "ListAccounts"
+			return return_object
+		elif path_values[0] == "users" and request.method == "DELETE" and len(path) == 1:
+			return_object["username"] = request.json['username']
+			return_object["password"] = request.json['password']
+			return_object["task"] = "DeleteAccount"
+			return return_object
+		elif path_values[0] == "users" and request.method == "POST" and len(path) == 1:
+			return_object["username"] = request.json['username']
+			return_object["password"] = request.json['password']
+			return_object["task"] = "CreateUser"
+			return return_object
+		elif path_values[0] == "groups" and request.method == "GET" and len(path) == 1:
+			return_object["username"] = request.json["username"]
+			return_object["password"] = request.json["password"]
+			return_object["task"] = "GetGroups"
+			return return_object
+		elif path_values[0] == "groups" and request.method == "POST" and len(path) == 1:
+			return_object["username"] = request.json["username"]
+			return_object["password"] = request.json["password"]
+			return_object["groupname"] = request.json["groupname"]
+			return_object["groupusers"] = request.json["groupusers"]
+			return_object["task"] = "CreateGroup"
+			return return_object
+		elif path_values[0] == "users" and path_values[2] == "messages" and request.method == "GET":
 			return_object["username"] = path_values[1]
 			return_object["password"] = request.json["password"]
 			return_object["task"] = "GetMessages"
@@ -19,33 +46,6 @@ class RestAPIStub:
 			return_object["message"] = request.json["message"]
 			return_object["targetgroup"] = request.json["targetgroup"]
 			return_object["task"] = "SendMessage"
-			return return_object
-		elif path_values[0] == "users" and request.method == "GET":
-			return_object["username"] = request.json['username']
-			return_object["password"] = request.json['password']
-			return_object["task"] = "ListAccounts"
-			return return_object
-		elif path_values[0] == "users" and request.method == "DELETE":
-			return_object["username"] = request.json['username']
-			return_object["password"] = request.json['password']
-			return_object["task"] = "DeleteAccount"
-			return return_object
-		elif path_values[0] == "users" and request.method == "POST":
-			return_object["username"] = request.json['username']
-			return_object["password"] = request.json['password']
-			return_object["task"] = "CreateUser"
-			return return_object
-		elif path_values[0] == "groups" and request.method == "GET":
-			return_object["username"] = request.json["username"]
-			return_object["password"] = request.json["password"]
-			return_object["task"] = "GetGroups"
-			return return_object
-		elif path_values[0] == "groups" and request.method == "POST":
-			return_object["username"] = request.json["username"]
-			return_object["password"] = request.json["password"]
-			return_object["groupname"] = request.json["groupname"]
-			return_object["groupusers"] = request.json["groupusers"]
-			return_object["task"] = "CreateGroup"
 			return return_object
 		else:
 			return_object["task"] = "INVALID"
