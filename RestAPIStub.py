@@ -5,12 +5,14 @@ class RestAPIStub:
 	def __init__(self):
 		pass
 
+	def encode(self, ret):
+		return ret
+	
 	def decode(self, path, request):
 		path_values = path.split("/")
 		target = path_values[0]
 		return_object = {}
 		request_json = json.loads(request.data)
-		pdb.set_trace()
 		assert(request_json)
 		if path_values[0] == "users" and request.method == "GET" and len(path_values) == 1:
 			return_object["username"] = request_json['username']
@@ -48,7 +50,7 @@ class RestAPIStub:
 			return_object["username"] = path_values[1]
 			return_object["password"] = request_json["password"]
 			return_object["message"] = request_json["message"]
-			return_object["targetgroup"] = request_json["targetgroup"]
+			return_object["groupname"] = path_values[1]
 			return_object["task"] = "SendMessage"
 			return return_object
 		else:

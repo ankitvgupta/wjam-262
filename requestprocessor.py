@@ -1,3 +1,5 @@
+import pdb
+
 class RequestProcessor:
 
     def __init__(self):
@@ -64,7 +66,8 @@ class RequestProcessor:
         return { "success" : True, "response" : response }
 
     def send_message(self, request_object):
-        group_id = request_object["group_id"]
+        group_id = request_object["groupname"]
+        
         if group_id not in self.groups:
             return { "success" : False, "response" : "Group ID does not exist." }
 
@@ -72,7 +75,7 @@ class RequestProcessor:
             self.messages[user_id].append(request_object['message'])
 
     def get_messages(self, request_object):
-        user_id  = request_object['user_id']
+        user_id  = request_object['username']
 
         if user_id not in self.messages:
             return { "success" : False, "response" : "User ID does not exist." }
@@ -82,7 +85,7 @@ class RequestProcessor:
         return { "success" : True, "response" : messages }
 
     def delete_account(self, request_object):
-        user_id = request_object['user_id']
+        user_id = request_object['username']
         if user_id not in self.users:
             return { "success" : False, "response" : "User does not exist." }
 

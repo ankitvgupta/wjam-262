@@ -9,6 +9,7 @@ class WireProtocolStub:
     #TODO add version to everything?
     # Takes in a string representation of http binary field
     def decode(self, path, b):
+        print path, b
         b = b.data
         
         version = struct.unpack("<i",b[0:4])[0]
@@ -54,7 +55,7 @@ class WireProtocolStub:
                 tmpusern = b[init+4:init+4+tmpuserlen]
                 init += 4 + tmpuserlen
                 if i == 0:
-                    ret_obj["groupuseres"] = [tmpusern]
+                    ret_obj["groupusers"] = [tmpusern]
                 else:
                     ret_obj["groupusers"].append(tmpusern)
             ret_obj["task"] = "CreateGroup"
