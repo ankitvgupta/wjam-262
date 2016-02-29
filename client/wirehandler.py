@@ -2,8 +2,8 @@ from basehandler import BaseHandler
 import struct
 import requests
 
-REQUEST_URL = 'https://wjam-262.herokuapp.com'
-# REQUEST_URL = 'http://0.0.0.0:8080'
+# REQUEST_URL = 'https://wjam-262.herokuapp.com'
+REQUEST_URL = 'http://0.0.0.0:8080'
 version = 0
 
 def sendRequest(command_type):

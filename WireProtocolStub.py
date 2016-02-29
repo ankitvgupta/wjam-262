@@ -9,14 +9,16 @@ class WireProtocolStub:
     #TODO add version to everything?
     # Takes in a string representation of http binary field
     def decode(self, path, b):
+        b = b.data
+        
         type = struct.unpack("<B", b[0])[0]
 
         ret_obj = {}
 
         def get_user_pwd(b, ret_obj):
-            usernamelen = struct.unpack("<i", b[1:5])
-            username = b[5:5 + usernamelen]
-            passwordlen = struct.unpack("<i", b[5 + usernamelen : 5 + usernamelen + 4])
+            usernamelen = struct.unpack("<i", b[1:5])[0]
+            username = b[5:(5 + usernamelen)]
+            passwordlen = struct.unpack("<i", b[5 + usernamelen : 5 + usernamelen + 4])[0]
             password = b[5 + usernamelen + 4 : 5 + usernamelen + 4 + passwordlen]
             start = 5 + usernamelen + 4 + passwordlen
             ret_obj["username"] = username
@@ -94,7 +96,7 @@ class WireProtocolStub:
             ret_obj["task"] = "INVALID"
             return ret_obj
 
-    def encode(response):
+    def encode(self, response):
         s = response["success"]
         resp = response["response"]
         # 0 if success, 1 if failure
