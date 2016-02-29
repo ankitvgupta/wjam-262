@@ -1,6 +1,7 @@
 from basehandler import BaseHandler
 import struct
 import requests
+import pdb
 
 # REQUEST_URL = 'https://wjam-262.herokuapp.com'
 REQUEST_URL = 'http://0.0.0.0:8080'
@@ -23,14 +24,14 @@ class WireHandler(BaseHandler):
 
     @sendRequest(0)
     def register(self):
-        return self.username_bytes()
+        return (self.username_bytes()
         + struct.pack("I", len(self.password))
-        + bytearray(password)
+        + bytearray(self.password))
         
     @sendRequest(1)
     def list_users(self, text):
-        return struct.pack("I", len(text))
-        + bytearray(text)
+        return (struct.pack("I", len(text))
+        + bytearray(text))
 
     def list_groups(self, text):
         # TODO
@@ -52,11 +53,11 @@ class WireHandler(BaseHandler):
         return self.send_generic(groupname, message, True)
     
     def send_generic(self, name, message, is_group):
-        return bytearray([1]) if is_group else bytearray([0])
+        return ((bytearray([1]) if is_group else bytearray([0]))
         + struct.pack("I", len(name))
         + bytearray(name)
         + struct.pack("I", len(message))
-        + bytearray(message)
+        + bytearray(message))
     
     @sendRequest(6)
     def delete(self):
