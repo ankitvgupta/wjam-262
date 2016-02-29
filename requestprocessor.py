@@ -47,6 +47,7 @@ class RequestProcessor:
     def list_groups(self, request_object):
         return { "success" : True, "response" : self.groups }
 
+    # TODO Stub and Client uses names and not ids
     def send_message(self, request_object):
         group_id = request_object["groupname"]
         
@@ -56,6 +57,7 @@ class RequestProcessor:
         for user_id in self.groups[group_id]['users']:
             self.messages[user_id].append(request_object['message'])
 
+    # TODO Stub and Client uses names and not ids
     def get_messages(self, request_object):
         user_id  = request_object['username']
 
@@ -66,6 +68,7 @@ class RequestProcessor:
         self.messages[user_id] = []
         return { "success" : True, "response" : messages }
 
+    # TODO Stub and Client uses names and not ids
     def delete_account(self, request_object):
         user_id = request_object['username']
         if user_id not in self.users:
