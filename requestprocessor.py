@@ -17,6 +17,13 @@ class RequestProcessor:
             return 0
         return max(dictionary) + 1
 
+    def is_matching(self, matchstring, string):
+        if '*' not in matchstring:
+            return matchstring == string
+
+        before_star = matchstring.split('*')[0]
+        return string[:len(before_star)] == before_star
+
     def register_user(self, request_object):
         if request_object["username"] in self.groupNames:
             return { "success" : False, "response" : "Username is already taken." }
@@ -30,9 +37,15 @@ class RequestProcessor:
         return { "success" : True, "response" : None }
 
     def list_accounts(self, request_object):
-        response = {}
-        for user_id in self.users:
-            response[user_id] = self.users[user_id]["username"]
+        response       = {}
+        relevant_users = self.users
+
+        if "matchstring" in request_object and request_object["matchstring"]:
+            relevant_users = dict((k, v) for k, v in self.users.items() if self.is_matching(request_object["matchstring"], v["username"]))
+
+        for user_id in relevant_users:
+            response[user_id] = relevant_users[user_id]["username"]
+
         return { "success" : True, "response" : response }
 
     def create_group(self, request_object):
@@ -45,7 +58,12 @@ class RequestProcessor:
         return { "success" : True, "response" : None }
 
     def list_groups(self, request_object):
-        return { "success" : True, "response" : self.groups }
+        response = self.groups
+
+        if "matchstring" in request_object:
+            response = dict((k, v) for k, v in self.groups.items() if self.is_matching(request_object["matchstring"], v["name"]))
+
+        return { "success" : True, "response" : response }
 
     # TODO Stub and Client uses names and not ids
     def send_message(self, request_object):
