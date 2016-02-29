@@ -8,7 +8,7 @@ class BaseHandler:
     def print_usage(self):
         print """Commands:
                     list (users|groups) [SEARCH_TEXT]
-                    send (user|group) (USERNAME|GROUPNAME) MESSAGE
+                    send GROUPNAME MESSAGE
                     get
                     register
                     group GROUPNAME USERNAME1 USERNAME2 ...
@@ -43,16 +43,18 @@ class BaseHandler:
                 self.get()
                 
             elif args[0] == 'send':
-                if len(args) < 4:
+                if len(args) < 3:
                     self.print_usage()
                     continue
-                if args[1] == 'user':
-                    self.send_user(args[2], " ".join(args[3:]))
-                elif args[1] == 'group':
-                    self.send_group(args[2], " ".join(args[3:]))
-                else:
-                    self.print_usage()
-                    continue
+                
+                self.send_group(args[1], " ".join(args[2:]))
+                # if args[1] == 'user':
+                #     self.send_user(args[2], " ".join(args[3:]))
+                # elif args[1] == 'group':
+                #     self.send_group(args[2], " ".join(args[3:]))
+                # else:
+                #     self.print_usage()
+                #     continue
                 
             elif args[0] == 'group':
                 if len(args) < 3:
@@ -80,8 +82,8 @@ class BaseHandler:
         pass
     def get(self):
         pass
-    def send_user(self, username, message):
-        pass
+    # def send_user(self, username, message):
+    #     pass
     def send_group(self, username, message):
         pass
     def group(self, usernames):

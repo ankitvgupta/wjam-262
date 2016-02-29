@@ -79,6 +79,7 @@ class RequestProcessor:
 
         return { "success" : True, "response" : response }
 
+    # TODO Stub and Client uses names and not ids
     def send_message(self, request_object):
         validation = self.validate_user(request_object)
         if not validation["success"]:
@@ -96,6 +97,7 @@ class RequestProcessor:
 
         return { "success" : True, "response" : "Message sent." }
 
+    # TODO Stub and Client uses names and not ids
     def get_messages(self, request_object):
         validation = self.validate_user(request_object)
         if not validation["success"]:
@@ -107,6 +109,7 @@ class RequestProcessor:
         self.messages[user_id] = []
         return { "success" : True, "response" : messages }
 
+    # TODO Stub and Client uses names and not ids
     def delete_account(self, request_object):
         validation = self.validate_user(request_object)
         if not validation["success"]:
