@@ -48,7 +48,7 @@ class RestAPIStub:
 			return_object["task"] = "GetMessages"
 			return return_object
 		elif path_values[0] == "users" and path_values[2] == "messages" and request.method == "POST":
-			return_object["username"] = path_values[1]
+			return_object["username"] = request_json["username"]
 			return_object["password"] = request_json["password"]
 			return_object["message"] = request_json["message"]
 			return_object["groupname"] = path_values[1]
