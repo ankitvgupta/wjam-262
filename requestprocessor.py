@@ -6,11 +6,11 @@ class RequestProcessor:
         # userId -> user object
         self.users      = {}
         # groupId -> name, list of userIds
-        self.groups     = {}
+        self.groups     = { 0 : { "name" : "all", "users" : [] } }
         # userId -> pending messages
         self.messages   = {}
         # for constant time reference
-        self.groupNames = {}
+        self.groupNames = { "all" : 0 }
         # for username -> userId
         self.usernames  = {}
 
@@ -37,17 +37,30 @@ class RequestProcessor:
 
         return { "success" : True, "response" : "Success!" }
 
+    def add_user_to_group(self, username, groupname):
+        group_id = self.groupNames[groupname]
+        user_id  = self.usernames[username]
+
+        if user_id not in self.groups[group_id]["users"]:
+            self.groups[group_id]["users"].append(user_id)
+
     def register_user(self, request_object):
         if request_object["username"] in self.groupNames:
             return { "success" : False, "response" : "Username is already taken." }
 
+        username                    = request_object["username"]
+        # Initialize the user
         next_user_id                = self.get_next_id(self.users)
-        self.users[next_user_id]    = { "username" : request_object["username"], "password" : request_object["password"] }
-        self.usernames[request_object["username"]] = next_user_id
+        self.users[next_user_id]    = { "username" : username, "password" : request_object["password"] }
+        self.usernames[username]    = next_user_id
+        # Initialize the group for the user
         next_group_id               = self.get_next_id(self.groups)
-        self.groups[next_group_id]  = { "name" : request_object["username"], "users" : [next_user_id] }
-        self.groupNames[request_object["username"]] = next_group_id
+        self.groups[next_group_id]  = { "name" : username, "users" : [next_user_id] }
+        self.groupNames[username]   = next_group_id
+        # Initialize the messages for the user
         self.messages[next_user_id] = []
+        # Add the user to the 'all' group
+        self.add_user_to_group(username, "all")
         return { "success" : True, "response" : None }
 
     def list_accounts(self, request_object):
