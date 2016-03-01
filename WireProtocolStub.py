@@ -49,16 +49,16 @@ class WireProtocolStub:
             num_users = struct.unpack("<i", bytes[st: st + 4])[0]
             groupnamelen = struct.unpack("<i", bytes[st + 4: st + 8])[0]
             groupname = bytes[st + 8:st + 8 + groupnamelen]
-            ret_obj["groupname"] = groupname
+            ret_obj["name"] = groupname
             init = st + 4 + 4 + groupnamelen
             for i in range(num_users):
                 tmpuserlen = struct.unpack("<i", bytes[init:init+4])[0]
                 tmpusern = bytes[init+4:init+4+tmpuserlen]
                 init += 4 + tmpuserlen
                 if i == 0:
-                    ret_obj["groupusers"] = [tmpusern]
+                    ret_obj["users"] = [tmpusern]
                 else:
-                    ret_obj["groupusers"].append(tmpusern)
+                    ret_obj["users"].append(tmpusern)
             ret_obj["task"] = "CreateGroup"
             return ret_obj
 
