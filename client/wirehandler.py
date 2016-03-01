@@ -3,8 +3,9 @@ import struct
 import requests
 import pdb
 
-REQUEST_URL = 'http://wjam-262.herokuapp.com'
+#REQUEST_URL = 'http://wjam-262.herokuapp.com'
 #REQUEST_URL = 'http://0.0.0.0:5000'
+REQUEST_URL = 'https://obscure-caverns-54504.herokuapp.com'
 version = 0
 
 def sendRequest(command_type):
