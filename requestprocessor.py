@@ -80,10 +80,14 @@ class RequestProcessor:
         return { "success" : True, "response" : None }
 
     def list_groups(self, request_object):
-        response = self.groups
+        relevant_groups = dict((k, v) for k, v in self.groups.items() if len(v["users"]) != 1 or self.users[v["users"][0]]["username"] != v["name"])
 
         if "matchstring" in request_object:
-            response = dict((k, v) for k, v in self.groups.items() if self.is_matching(request_object["matchstring"], v["name"]))
+            relevant_groups = dict((k, v) for k, v in relevant_groups.items() if self.is_matching(request_object["matchstring"], v["name"]))
+
+        response = {}
+        for group_id in relevant_groups:
+            response[group_id] = { "name" : relevant_groups[group_id]["name"], "users" : map(lambda user_id : self.users[user_id]["username"], relevant_groups[group_id]["users"]) }
 
         return { "success" : True, "response" : response }
 
