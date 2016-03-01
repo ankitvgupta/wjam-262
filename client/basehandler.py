@@ -10,7 +10,6 @@ class BaseHandler:
                     list (users|groups) [SEARCH_TEXT]
                     send GROUPNAME MESSAGE
                     get
-                    register
                     group GROUPNAME USERNAME1 USERNAME2 ...
                     delete
                     exit"""
