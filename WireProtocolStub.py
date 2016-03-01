@@ -37,27 +37,28 @@ class WireProtocolStub:
         elif command_type == 1:
             # list accounts
             user, pwd, st = get_user_pwd(bytes, ret_obj)
-            matchstringlen = struct.unpack("<i", bytes[1 + st:5 + st])[0]
-            matchstring = bytes[5 + st:5 + matchstringlen + st]
+            matchstringlen = struct.unpack("<i", bytes[st:st+4])[0]
+
+            matchstring = bytes[4 + st:4 + matchstringlen + st]
             ret_obj["task"] = "ListAccounts"
             return ret_obj
 
         elif command_type == 2:
             # create group
             user, pwd, st = get_user_pwd(bytes, ret_obj)
-            num_users = struct.unpack("<i", bytes[st: st + 4])
-            groupnamelen = struct.unpack("<i", bytes[st + 4: st + 8])
+            num_users = struct.unpack("<i", bytes[st: st + 4])[0]
+            groupnamelen = struct.unpack("<i", bytes[st + 4: st + 8])[0]
             groupname = bytes[st + 8:st + 8 + groupnamelen]
-            ret_obj["groupname"] = groupname
+            ret_obj["name"] = groupname
             init = st + 4 + 4 + groupnamelen
             for i in range(num_users):
-                tmpuserlen = struct.unpack("<i", bytes[init:init+4])
+                tmpuserlen = struct.unpack("<i", bytes[init:init+4])[0]
                 tmpusern = bytes[init+4:init+4+tmpuserlen]
                 init += 4 + tmpuserlen
                 if i == 0:
-                    ret_obj["groupusers"] = [tmpusern]
+                    ret_obj["users"] = [tmpusern]
                 else:
-                    ret_obj["groupusers"].append(tmpusern)
+                    ret_obj["users"].append(tmpusern)
             ret_obj["task"] = "CreateGroup"
             return ret_obj
 
@@ -71,13 +72,14 @@ class WireProtocolStub:
         elif command_type == 4:
             # send_message
             user, pwd, st = get_user_pwd(bytes,ret_obj)   
-            usr_or_group = struct.unpack("<i", bytes[st : st + 4])
-            namelen = struct.unpack("<i", bytes[st+4:st+8])
-            name = bytes[st+8:st+ 8 + namelen]
-            msglen = struct.unpack("<i", bytes[st+ 8 + namelen:st+ 12 + namelen])[0]
-            msg = bytes[st+ 12 + namelen:st+ 12 + namelen + msglen]
+            #usr_or_group = struct.unpack("<i", bytes[st : st + 1])
+            namelen = struct.unpack("<i", bytes[st+1:st+5])[0]
+            name = bytes[st+5:st+ 5 + namelen]
+            name_end = st + 5 + namelen
+            msglen = struct.unpack("<i", bytes[name_end:name_end + 4])[0]
+            msg = bytes[name_end + 4:name_end + msglen + 4]
             ret_obj["message"] = msg
-            ret_obj["targetgroup"] = name
+            ret_obj["groupname"] = name
             ret_obj["task"] = "SendMessage"
             return ret_obj
 

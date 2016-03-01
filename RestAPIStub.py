@@ -38,8 +38,8 @@ class RestAPIStub:
 		elif path_values[0] == "groups" and request.method == "POST" and len(path_values) == 1:
 			return_object["username"] = request_json["username"]
 			return_object["password"] = request_json["password"]
-			return_object["groupname"] = request_json["groupname"]
-			return_object["groupusers"] = request_json["groupusers"]
+			return_object["name"] = request_json["groupname"]
+			return_object["users"] = request_json["groupusers"]
 			return_object["task"] = "CreateGroup"
 			return return_object
 		elif path_values[0] == "users" and path_values[2] == "messages" and request.method == "GET":

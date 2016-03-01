@@ -3,8 +3,9 @@ import struct
 import requests
 import pdb
 
-# REQUEST_URL = 'https://wjam-262.herokuapp.com'
-REQUEST_URL = 'http://0.0.0.0:8080'
+#REQUEST_URL = 'http://wjam-262.herokuapp.com'
+#REQUEST_URL = 'http://0.0.0.0:5000'
+REQUEST_URL = 'https://obscure-caverns-54504.herokuapp.com'
 version = 0
 
 def sendRequest(command_type):
@@ -33,12 +34,24 @@ class WireHandler(BaseHandler):
         + struct.pack("I", len(text))
         + bytearray(text))
 
+    @sendRequest(3)
     def list_groups(self, text):
-        # TODO
-        pass
-    def group(self, usernames):
-        # TODO
-        pass
+        text = "" if text is None else text
+        return (self.username_bytes()
+        + struct.pack("I", len(text))
+        + bytearray(text))
+
+    @sendRequest(2)
+    def group(self, groupname, usernames):
+        ret = (self.username_bytes() 
+            + struct.pack("I", len(usernames))
+            + struct.pack("I", len(groupname))
+            + bytearray(groupname))
+            
+        for username in usernames:
+            ret += struct.pack("I", len(username)) + bytearray(username)
+
+        return ret
 
     @sendRequest(5)    
     def get(self):
