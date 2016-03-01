@@ -15,8 +15,8 @@ import json
 # requests_log.setLevel(logging.DEBUG)
 # requests_log.propagate = True
 
-# REQUEST_URL = 'https://wjam-262.herokuapp.com'
-REQUEST_URL = 'http://0.0.0.0:5000'
+REQUEST_URL = 'https://wjam-262.herokuapp.com'
+#REQUEST_URL = 'http://0.0.0.0:5000'
 
 def sendRequest(path, method):
     def wrap(f):
