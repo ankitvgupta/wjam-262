@@ -70,15 +70,16 @@ class WireProtocolStub:
 
         elif command_type == 4:
             # send_message
+            pdb.set_trace()
             user, pwd, st = get_user_pwd(bytes,ret_obj)   
-            usr_or_group = struct.unpack("<i", bytes[st : st + 1])
-            namelen = struct.unpack("<i", bytes[st+1:st+5])
+            #usr_or_group = struct.unpack("<i", bytes[st : st + 1])
+            namelen = struct.unpack("<i", bytes[st+1:st+5])[0]
             name = bytes[st+5:st+ 5 + namelen]
             name_end = st + 5 + namelen
-            msglen = struct.unpack("<i", bytes[name_end:name_end +4])[0]
+            msglen = struct.unpack("<i", bytes[name_end:name_end + 4])[0]
             msg = bytes[name_end + 4:name_end + msglen + 4]
             ret_obj["message"] = msg
-            ret_obj["targetgroup"] = name
+            ret_obj["groupname"] = name
             ret_obj["task"] = "SendMessage"
             return ret_obj
 
