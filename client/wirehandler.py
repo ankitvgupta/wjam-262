@@ -41,7 +41,7 @@ class WireHandler(BaseHandler):
         + bytearray(text))
 
     @sendRequest(2)
-    def group(self, user_ids):
+    def group(self, groupname, user_ids):
         ret = self.username_bytes() + struct.pack("I", len(user_ids))
         for user_id in user_ids:
             ret += struct.pack("I", user_id)
