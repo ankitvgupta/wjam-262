@@ -33,12 +33,19 @@ class WireHandler(BaseHandler):
         + struct.pack("I", len(text))
         + bytearray(text))
 
+    @sendRequest(3)
     def list_groups(self, text):
-        # TODO
-        pass
-    def group(self, usernames):
-        # TODO
-        pass
+        text = "" if text is None else text
+        return (self.username_bytes()
+        + struct.pack("I", len(text))
+        + bytearray(text))
+
+    @sendRequest(2)
+    def group(self, user_ids):
+        ret = self.username_bytes() + struct.pack("I", len(user_ids))
+        for user_id in user_ids:
+            ret += struct.pack("I", user_id)
+        return ret
 
     @sendRequest(5)    
     def get(self):
