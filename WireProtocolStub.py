@@ -71,11 +71,12 @@ class WireProtocolStub:
         elif command_type == 4:
             # send_message
             user, pwd, st = get_user_pwd(bytes,ret_obj)   
-            usr_or_group = struct.unpack("<i", bytes[st : st + 4])
-            namelen = struct.unpack("<i", bytes[st+4:st+8])
-            name = bytes[st+8:st+ 8 + namelen]
-            msglen = struct.unpack("<i", bytes[st+ 8 + namelen:st+ 12 + namelen])[0]
-            msg = bytes[st+ 12 + namelen:st+ 12 + namelen + msglen]
+            usr_or_group = struct.unpack("<i", bytes[st : st + 1])
+            namelen = struct.unpack("<i", bytes[st+1:st+5])
+            name = bytes[st+5:st+ 5 + namelen]
+            name_end = st + 5 + namelen
+            msglen = struct.unpack("<i", bytes[name_end:name_end +4])[0]
+            msg = bytes[name_end + 4:name_end + msglen + 4]
             ret_obj["message"] = msg
             ret_obj["targetgroup"] = name
             ret_obj["task"] = "SendMessage"
