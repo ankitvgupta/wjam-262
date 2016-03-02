@@ -65,8 +65,12 @@ class WireProtocolStub:
         elif command_type == 3:
             # list groups
             user, pwd, st = get_user_pwd(bytes,ret_obj)
+            matchstringlen = struct.unpack("<i", bytes[st:st+4])[0]
+
+            matchstring = bytes[4 + st:4 + matchstringlen + st]
             # that's all the info we need
             ret_obj["task"] = "GetGroups"
+            ret_obj["matchstring"] = matchstring
             return ret_obj
 
         elif command_type == 4:
