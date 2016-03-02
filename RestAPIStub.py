@@ -29,7 +29,7 @@ class RestAPIStub:
 			return return_object
 		elif path_values[0] == "groups" and request.method == "GET" and len(path_values) == 1:
 			return_object["task"] = "GetGroups"
-            return_object["matchstring"] = request_json["matchstring"]
+			return_object["matchstring"] = request_json["matchstring"]
 			return return_object
 		elif path_values[0] == "groups" and request.method == "POST" and len(path_values) == 1:
 			return_object["name"] = request_json["groupname"]
