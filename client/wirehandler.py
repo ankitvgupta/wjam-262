@@ -16,7 +16,6 @@ def sendRequest(command_type):
         return wrapped_f
     return wrap
 
-# defined per the design https://docs.google.com/document/d/1gF_5esZ2cq-pECmQuPqit8FXHTf76Y9pqLyGkCfK5Rc/edit
 class WireHandler(BaseHandler):
 
     # returns 4 + len(username) bytes: length of username; length bytes: username
