@@ -7,7 +7,6 @@ class WireProtocolStub:
     def __init__(self):
         pass
 
-    #TODO add version to everything?
     # Takes in a string representation of http binary field
     def decode(self, path, request):
         bytes = request.data
