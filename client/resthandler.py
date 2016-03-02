@@ -15,7 +15,8 @@ import json
 # requests_log.setLevel(logging.DEBUG)
 # requests_log.propagate = True
 
-REQUEST_URL = 'https://wjam-262.herokuapp.com'
+REQUEST_URL = 'https://obscure-caverns-54504.herokuapp.com'
+version = 0
 #REQUEST_URL = 'http://0.0.0.0:5000'
 
 def sendRequest(path, method):
