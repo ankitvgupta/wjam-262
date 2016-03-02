@@ -41,12 +41,16 @@ class RestHandler(BaseHandler):
         
     @sendRequest('/users', 'GET')
     def list_users(self, text):
-        return self.req_dict()
+        return self.list_generic(text)
 
     @sendRequest('/groups', 'GET')
     def list_groups(self, text):
-        return self.req_dict()
+        return self.list_generic(text)
 
+    def list_generic(self, text):
+        extra_add = { 'matchstring': "" if text == None else text }
+        return self.req_dict(extra_add)
+        
     @sendRequest('/groups', 'POST')        
     def group(self, groupname, usernames):
         return self.req_dict({

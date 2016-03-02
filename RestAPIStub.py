@@ -13,12 +13,13 @@ class RestAPIStub:
 		path_values = path.split("/")
 		target = path_values[0]
 		return_object = {}
+		request_json = json.loads(request.data)
 		return_object["username"] = request_json['username']
 		return_object["password"] = request_json['password']
-		request_json = json.loads(request.data)
 		assert(request_json)
 		if path_values[0] == "users" and request.method == "GET" and len(path_values) == 1:
 			return_object["task"] = "ListAccounts"
+			return_object["matchstring"] = request_json["matchstring"]
 			return return_object
 		elif path_values[0] == "users" and request.method == "DELETE" and len(path_values) == 1:
 			return_object["task"] = "DeleteAccount"
@@ -28,6 +29,7 @@ class RestAPIStub:
 			return return_object
 		elif path_values[0] == "groups" and request.method == "GET" and len(path_values) == 1:
 			return_object["task"] = "GetGroups"
+            return_object["matchstring"] = request_json["matchstring"]
 			return return_object
 		elif path_values[0] == "groups" and request.method == "POST" and len(path_values) == 1:
 			return_object["name"] = request_json["groupname"]
