@@ -13,9 +13,9 @@ class RestAPIStub:
 		path_values = path.split("/")
 		target = path_values[0]
 		return_object = {}
+		request_json = json.loads(request.data)
 		return_object["username"] = request_json['username']
 		return_object["password"] = request_json['password']
-		request_json = json.loads(request.data)
 		assert(request_json)
 		if path_values[0] == "users" and request.method == "GET" and len(path_values) == 1:
 			return_object["task"] = "ListAccounts"
