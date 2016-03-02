@@ -40,6 +40,7 @@ class WireProtocolStub:
 
             matchstring = bytes[4 + st:4 + matchstringlen + st]
             ret_obj["task"] = "ListAccounts"
+            ret_obj["matchstring"] = matchstring
             return ret_obj
 
         elif command_type == 2:
