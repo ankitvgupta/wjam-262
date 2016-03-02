@@ -95,7 +95,7 @@ class RequestProcessor:
     def list_groups(self, request_object):
         relevant_groups = dict((k, v) for k, v in self.groups.items() if len(v["users"]) != 1 or self.users[v["users"][0]]["username"] != v["name"])
 
-        if "matchstring" in request_object:
+        if "matchstring" in request_object and request_object["matchstring"]:
             relevant_groups = dict((k, v) for k, v in relevant_groups.items() if self.is_matching(request_object["matchstring"], v["name"]))
 
         response = {}
