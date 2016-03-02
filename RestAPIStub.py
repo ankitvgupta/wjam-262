@@ -19,7 +19,7 @@ class RestAPIStub:
 		assert(request_json)
 		if path_values[0] == "users" and request.method == "GET" and len(path_values) == 1:
 			return_object["task"] = "ListAccounts"
-            return_object["matchstring"] = request_json["matchstring"]
+			return_object["matchstring"] = request_json["matchstring"]
 			return return_object
 		elif path_values[0] == "users" and request.method == "DELETE" and len(path_values) == 1:
 			return_object["task"] = "DeleteAccount"
