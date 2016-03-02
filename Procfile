@@ -1,1 +1,1 @@
-web: python server.py wire
+web: python server.py rest
