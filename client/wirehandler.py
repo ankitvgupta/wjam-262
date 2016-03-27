@@ -3,12 +3,16 @@ import struct
 import requests
 import pdb
 
-#REQUEST_URL = 'http://wjam-262.herokuapp.com'
-#REQUEST_URL = 'http://0.0.0.0:30978/'
 REQUEST_URL = 'https://obscure-caverns-54504.herokuapp.com'
 version = 0
 
 def sendRequest(command_type):
+    """ 
+    A decorator to wrap requests sent to the server. Used by the @sendRequest(command_type) construct in python
+    
+    :param command_type: the command type (0-7) as defined in the design documentation
+    :return: a high-level function that is used as a decoratar by the python API
+    """
     def wrap(f):
         def wrapped_f(*args):
             data = struct.pack("I", version) + bytearray([command_type]) + f(*args)
@@ -17,11 +21,33 @@ def sendRequest(command_type):
     return wrap
 
 class WireHandler(BaseHandler):
-
-    # returns 4 + len(username) bytes: length of username; length bytes: username
+    """
+    A client handler which converts input into a Wire API implementation. See
+    design documentation for specific protocol definitions
+    """
+    
     def username_bytes(self):
-        return (struct.pack("I", len(self.username)) + bytearray(self.username) + struct.pack("I", len(self.password)) + bytearray(self.password))
+        """
+        Helper function for authentication. This should be appended to any
+        set of bytes in the request that requires a username / password pair
+        
+        :return: ByteArray of [username length, username, password length, password]
+        """
+        return (struct.pack("I", len(self.username)) 
+            + bytearray(self.username) 
+            + struct.pack("I", len(self.password)) 
+            + bytearray(self.password))
 
+    def send_generic(self, name, message, is_group):
+        return (self.username_bytes()
+        + (bytearray([1]) if is_group else bytearray([0]))
+        + struct.pack("I", len(name))
+        + bytearray(name)
+        + struct.pack("I", len(message))
+        + bytearray(message))
+
+    # The following functions overwrite the abstract functions in BaseHandler
+    
     @sendRequest(0)
     def register(self):
         return self.username_bytes()
@@ -63,14 +89,6 @@ class WireHandler(BaseHandler):
     @sendRequest(4)
     def send_group(self, groupname, message):
         return self.send_generic(groupname, message, True)
-    
-    def send_generic(self, name, message, is_group):
-        return (self.username_bytes()
-        + (bytearray([1]) if is_group else bytearray([0]))
-        + struct.pack("I", len(name))
-        + bytearray(name)
-        + struct.pack("I", len(message))
-        + bytearray(message))
     
     @sendRequest(6)
     def delete(self):
