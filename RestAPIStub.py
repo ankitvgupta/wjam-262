@@ -2,20 +2,35 @@ import json
 import pdb
 import flask
 
+"""
+This class implements the RestAPI encoder and decoder. 
+
+The encoder is used to transfer information from the server
+back to the user in a consistent format. Since we are displaying information
+to the user in a simple JSON-like notation, this requires a simple jsonify call
+on the server's return object.
+
+The decoder is the more critical piece here, as it allows us to convert the request
+object that is specific to REST into a custom internal request object. The format of this
+internal request object is shared between the various transfer protocol implementations
+(REST/WireProtocol), and thus we can add more such protocols in the future by adding 
+another stub implementation, like this one.
+"""
 class RestAPIStub:
 	def __init__(self):
 		pass
 
-	""" An encoder for requests from the server that are going to the user.
-		Since requests are being receives as dictionaries, we can encode them for
-		sending back to the user as a JSON string. Thus, we simply call
-		jsonify.
+	""" 
+	An encoder for requests from the server that are going to the user.
+	Since requests are being receives as dictionaries, we can encode them for
+	sending back to the user as a JSON string. Thus, we simply call
+	jsonify.
 
-		:param ret: The information to be returned to the user.
-		Ret must be a Python dictionary that can be jsonified into a string.
-		No assumptions otherwise.
+	:param ret: The information to be returned to the user.
+	Ret must be a Python dictionary that can be jsonified into a string.
+	No assumptions otherwise.
 
-		:return A jsonified dictionary with the information needed to return to the user. 
+	:return A jsonified dictionary with the information needed to return to the user. 
 	"""
 	def encode(self, ret):
 		return flask.jsonify(ret)
