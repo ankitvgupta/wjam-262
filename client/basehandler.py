@@ -1,11 +1,42 @@
 import sys
 
 class BaseHandler:
+    """
+    Abstract client input handler that all communications protocols should extend. 
+    A client handler is responsible for converting standardized user input into a specified 
+    communications protocol. It will loop waiting for user input in the command line.
+    
+    To debug this file, use:
+        import logging
+        try:
+            import http.client as http_client
+        except ImportError:
+            # Python 2
+            import httplib as http_client
+        http_client.HTTPConnection.debuglevel = 1
+        logging.basicConfig() 
+        logging.getLogger().setLevel(logging.DEBUG)
+        requests_log = logging.getLogger("requests.packages.urllib3")
+        requests_log.setLevel(logging.DEBUG)
+        requests_log.propagate = True
+    """
+    
     def __init__(self, username, password):
+        """
+        Initialize the handler, stores the username and password in plain-text in ram
+        
+        :param username: the username of the chatter
+        :param password: the password of the chatter
+        """
         self.username = username
         self.password = password
     
     def print_usage(self):
+        """
+        Prints the usage for the user; used on error
+        
+        :return: None
+        """
         print """Commands:
                     list (users|groups) [SEARCH_TEXT]
                     send GROUPNAME MESSAGE
@@ -15,6 +46,15 @@ class BaseHandler:
                     exit"""
 
     def get_command(self):
+        """
+        Loops on the command line for user input, checks validity of user input,
+        and calls the relevant function commanded in the 
+        communications protocol (implemented by sub-classes).
+        
+        Possible commands are listed above in print_usage function
+        
+        :return: None
+        """
         while True:
             command = raw_input("Enter command: ")
             args = command.split(' ')
@@ -23,6 +63,8 @@ class BaseHandler:
                 self.register()
                 
             elif args[0] == 'list':
+                
+                # checks for the variable length user-inputs as search-text
                 if len(args) == 2:
                     search_text = None
                 elif len(args) == 3:
@@ -31,6 +73,7 @@ class BaseHandler:
                     self.print_usage()
                     continue
 
+                # kick-off to sub-class implementation
                 if args[1] == 'users':
                     self.list_users(search_text)
                 elif args[1] == 'groups':
@@ -45,15 +88,7 @@ class BaseHandler:
                 if len(args) < 3:
                     self.print_usage()
                     continue
-                
                 self.send_group(args[1], " ".join(args[2:]))
-                # if args[1] == 'user':
-                #     self.send_user(args[2], " ".join(args[3:]))
-                # elif args[1] == 'group':
-                #     self.send_group(args[2], " ".join(args[3:]))
-                # else:
-                #     self.print_usage()
-                #     continue
                 
             elif args[0] == 'group':
                 if len(args) < 3:
@@ -71,8 +106,12 @@ class BaseHandler:
                 sys.exit()
                 
             else:
+                # error
                 self.print_usage()
     
+    # The following functions should be overwritten by sub-classes. To see what
+    # each function is meant to do, read the Design Documentation for the meaning
+    # of each action.
     def register(self):
         pass
     def list_users(self, text):
@@ -81,11 +120,9 @@ class BaseHandler:
         pass
     def get(self):
         pass
-    # def send_user(self, username, message):
-    #     pass
     def send_group(self, username, message):
         pass
-    def group(self, usernames):
+    def group(self, groupname, usernames):
         pass
     def delete(self):
         pass

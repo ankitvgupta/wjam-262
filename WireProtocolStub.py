@@ -3,6 +3,9 @@ import binascii
 import struct
 import pdb
 
+# This class represents the processor which will take in binary data over
+# the wire (from a binary http field) and parse it out into a dictionary,
+# with the appropritate fields filled in. The relevant fields are
 class WireProtocolStub:
     def __init__(self):
         pass
