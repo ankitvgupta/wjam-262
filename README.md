@@ -19,8 +19,7 @@ The client folder contains the code that will run in the clients for this softwa
 
 ## Server
 The files in the top-level directory contain the server code
-- [server.py](server.py)
-- [requestprocessor.py](requestprocessor.py)
-- [RestAPIStub.py](RestAPIStub.py)
-- [WireProtocolStub.py](WireProtocolStub.py)
-- [requirements.txt](requirements.txt)
+- [server.py](server.py): This is the main driver program for the server. This loads the appropriate transfer protocol and starts listening for requests.
+- [requestprocessor.py](requestprocessor.py): This is a protocol-agnostic backend, which contains the key data-structures. [server.py](server.py) instantiates a RequestProcessor, which takes protocol-agnostic internal request objects, and returns the appropriate responses, while also storing the information for the system, like the users, groups, messages, etc.
+- [RestAPIStub.py](RestAPIStub.py): This Stub contains the information needed to encode/decode requests and responses for the REST API. Decode converts the REST Request into the backend internal request that that [RequestProcessor](requestprocessor.py) can handle. 
+- [WireProtocolStub.py](WireProtocolStub.py): This Stub contains the information needed to encode/decode requests and responses for the WireProtocol API. Decode converts the WireProtocol information into the backend internal request that that [RequestProcessor](requestprocessor.py) can handle. 
