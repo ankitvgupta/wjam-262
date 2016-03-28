@@ -72,7 +72,9 @@ class RestAPIStub:
 		path_values = path.split("/")
 		target = path_values[0]
 		return_object = {}
+		# Load the JSON
 		request_json = json.loads(request.data)
+		# Always pass the username and password through
 		return_object["username"] = request_json['username']
 		return_object["password"] = request_json['password']
 		assert(request_json)
