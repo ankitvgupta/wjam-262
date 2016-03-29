@@ -1,3 +1,18 @@
+"""
+RequestProcessor
+
+This is the central data structure in the server backend. The server instantiates a
+RequestProcessor. The main calls to the public methods in RequestProcessor
+include a request_object, which is an internal dictionary-based data structure
+which is transfer protocol-agnostic, meaning it works the same with both the
+WireProtocol and REST API. Thus, the RequestProcessor has no knowledge of what
+the transfer protocol is. 
+
+The RequestProcessor implements the main functions of the backend, such as adding users,
+deleting users, creating groups, sending/receiving messages, etc.
+
+"""
+
 class RequestProcessor:
 
     def __init__(self):
