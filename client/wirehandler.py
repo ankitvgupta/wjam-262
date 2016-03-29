@@ -1,7 +1,6 @@
 from basehandler import BaseHandler
 import struct
 import requests
-import pdb
 
 REQUEST_URL = 'https://obscure-caverns-54504.herokuapp.com'
 version = 0
