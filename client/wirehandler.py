@@ -2,6 +2,7 @@ from basehandler import BaseHandler
 import struct
 import requests
 
+# Base URL to request - this should match the location where the server is deployed.
 REQUEST_URL = 'https://obscure-caverns-54504.herokuapp.com'
 version = 0
 
