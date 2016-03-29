@@ -59,6 +59,7 @@ if __name__ == '__main__':
         username = sys.argv[2]
         password = sys.argv[3]
     
+    # Instantiate the appropriate handler.
     if sys.argv[1] == 'rest':
         handler = RestHandler(username, password)
     elif sys.argv[1] == 'wire':
