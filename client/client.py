@@ -1,3 +1,18 @@
+"""
+client.py
+This is the main driver program for the client. To instantiate the client, the user
+should indicate whether the REST protocol or WireProtocol is desired, along with the
+username and password. If this is a new user, adding the word "register" will create the 
+new user. See the below usage for the format.
+
+Here is the correct usage:
+USAGE: ./client.py (rest|wire) [register] USERNAME PASSWORD
+
+
+This file connects the appropriate handler (RestHandler or WireHandler) in order to 
+do the appropriate information transfer to the server. Prior to running this client,
+the server should be running already.
+"""
 #!/usr/bin/python
 
 import sys
@@ -44,6 +59,7 @@ if __name__ == '__main__':
         username = sys.argv[2]
         password = sys.argv[3]
     
+    # Instantiate the appropriate handler.
     if sys.argv[1] == 'rest':
         handler = RestHandler(username, password)
     elif sys.argv[1] == 'wire':

@@ -3,17 +3,20 @@ import binascii
 import struct
 import pdb
 
-# This class represents the processor which will take in binary data over
-# the wire (from a binary http field) and parse it out into a dictionary,
-# with the appropritate fields filled in. The relevant fields are
-# -username: the username of the user
-# -password: their password (everyone must have these two fields for requests
-#  		to be authenticated)
-# -task: what operation is to be performed by the server
-# -matchstring: a string to be matched, e.g. for listing groups
-# -message: the message to be sent to another user
-# -groupname: the name of a group to create or send a message to
+"""
+WireProtocolStub
 
+This class represents the processor which will take in binary data over
+the wire (from a binary http field) and parse it out into a dictionary,
+with the appropritate fields filled in. The relevant fields are
+-username: the username of the user
+-password: their password (everyone must have these two fields for requests
+ 		to be authenticated)
+-task: what operation is to be performed by the server
+-matchstring: a string to be matched, e.g. for listing groups
+-message: the message to be sent to another user
+-groupname: the name of a group to create or send a message to
+"""
 class WireProtocolStub:
     def __init__(self):
         pass
