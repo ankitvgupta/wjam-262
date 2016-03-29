@@ -153,6 +153,9 @@ class WireProtocolStub:
             ret_obj["task"] = "INVALID"
             return ret_obj
 
+    # Encode the response, which is always just the response field, as:
+    # 4 bytes for 0 or 1, 0 if success, 1 if failure, the length of the
+    # response as a 4 byte integer, and then the bytes of the response itself.
     def encode(self, response):
         s = response["success"]
         resp = str(response["response"])
