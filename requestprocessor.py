@@ -12,7 +12,6 @@ The RequestProcessor implements the main functions of the backend, such as addin
 deleting users, creating groups, sending/receiving messages, etc.
 
 """
-
 class RequestProcessor:
 
     def __init__(self):
@@ -39,6 +38,18 @@ class RequestProcessor:
         before_star = matchstring.split('*')[0]
         return string[:len(before_star)] == before_star
 
+    """
+    Confirm that the username and password fields are correct.
+
+    :param request_object: This is the internal request object that
+    contains the information needed for the given request
+
+    Assumptions:
+    This will cause a crash if the username/password fields are missing.
+    The client code enforces providing a username/password, so that will not happen.
+
+    :return dictionary indicating success/failure, text response.
+    """
     def validate_user(self, request_object):
         username = request_object["username"]
         if username not in self.usernames:
@@ -56,7 +67,18 @@ class RequestProcessor:
 
         if user_id not in self.groups[group_id]["users"]:
             self.groups[group_id]["users"].append(user_id)
+    """
+    Register a new user
 
+    :param request_object: This is the internal request object that
+    contains the information needed for the given request
+
+    Assumptions:
+    This will cause a crash if the username field is missing.
+    The client code enforces providing a username, so that will not happen.
+
+    :return dictionary indicating success/failure, text response on failure.
+    """
     def register_user(self, request_object):
         if request_object["username"] in self.groupNames:
             return { "success" : False, "response" : "Username is already taken." }
@@ -76,6 +98,17 @@ class RequestProcessor:
         self.add_user_to_group(username, "all")
         return { "success" : True, "response" : None }
 
+    """
+    Return a list of all accounts (or just those that match a wildcard)
+
+    :param request_object: This is the internal request object that
+    contains the information needed for the given request
+
+    The wildcard must be specified in a matchstring attribute in request_object. If 
+    left out, this will return all accounts.
+
+    :return dictionary indicating success/failure, list of accounts.
+    """
     def list_accounts(self, request_object):
         response       = {}
         relevant_users = self.users
