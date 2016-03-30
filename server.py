@@ -30,6 +30,8 @@ if sys.argv[1] == 'rest':
 else:
     stub = WireProtocolStub()
 
+# Instantiate a RequestProcessor. This is the main data structure for the backend.
+# See the RequestProcessor documentation for more info.
 request_processor = RequestProcessor()
 
 def process_request(request_object):

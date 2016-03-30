@@ -112,17 +112,24 @@ class BaseHandler:
     # The following functions should be overwritten by sub-classes. To see what
     # each function is meant to do, read the Design Documentation for the meaning
     # of each action.
+    """ Register a user """
     def register(self):
         pass
+    """ List users that match the wildcard "text" """
     def list_users(self, text):
         pass
+    """ List groups that match the wildcard "text" """
     def list_groups(self, text):
         pass
+    """ Get all messages to the current user """
     def get(self):
         pass
+    """ Send "message" to "username" - 'username' can be a groupname or username"""
     def send_group(self, username, message):
         pass
+    """ Create a group called "groupanme" with "usernames" in it """
     def group(self, groupname, usernames):
         pass
+    """ Delete the current user (and log out). """
     def delete(self):
         pass
