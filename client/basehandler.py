@@ -59,9 +59,11 @@ class BaseHandler:
             command = raw_input("Enter command: ")
             args = command.split(' ')
             
+            # Register a new user
             if args[0] == 'register':
                 self.register()
                 
+            # List the commands
             elif args[0] == 'list':
                 
                 # checks for the variable length user-inputs as search-text
@@ -80,41 +82,49 @@ class BaseHandler:
                     self.list_groups(search_text)
                 else:
                     self.print_usage()
-                    
+                
+            # Get new messages    
             elif args[0] == 'get':
                 self.get()
-                
+               
+            # Send a message 
             elif args[0] == 'send':
                 if len(args) < 3:
                     self.print_usage()
                     continue
                 self.send_group(args[1], " ".join(args[2:]))
-                
+              
+            # Make a group  
             elif args[0] == 'group':
                 if len(args) < 3:
                     self.print_usage()
                     continue
                 self.group(args[1], args[2:])
                 
+            # Delete the current user
             elif args[0] == 'delete':
                 self.delete()
                 print "Thanks for messaging!"
                 sys.exit()
                 
+            # Close the client
             elif args[0] == 'exit':
                 print "Thanks for messaging!"
                 sys.exit()
                 
+            # Invalid request - print usage.
             else:
                 # error
                 self.print_usage()
     
-    # The following functions should be overwritten by sub-classes. To see what
-    # each function is meant to do, read the Design Documentation for the meaning
-    # of each action.
-    """ Register a user """
+    # The following functions should be overwritten by sub-classes.
+    """ 
+    Register a user 
+    :return result from server indicating success/failure
+    """
     def register(self):
         pass
+
     """ 
     List users that match the wildcard "text" 
     :param text: The wildcard string
@@ -122,6 +132,8 @@ class BaseHandler:
     :return result from server with list of users.
     """
     def list_users(self, text):
+        pass
+
     """ 
     List groups that match the wildcard "text" 
     :param text: The wildcard string
@@ -133,7 +145,6 @@ class BaseHandler:
 
     """ 
     Get all messages to the current user
-
     :return result from server with unread messages.
     """
     def get(self):
@@ -148,6 +159,7 @@ class BaseHandler:
     """
     def send_group(self, username, message):
         pass
+
     """ 
     Create a group called "groupanme" with "usernames" in it 
     :param groupname: String with the name of the group to be made
@@ -156,6 +168,7 @@ class BaseHandler:
     """
     def group(self, groupname, usernames):
         pass
+
     """ 
     Delete the current user (and log out). 
     :return result from server indicating success/failure
