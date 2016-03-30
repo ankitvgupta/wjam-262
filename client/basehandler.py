@@ -115,21 +115,50 @@ class BaseHandler:
     """ Register a user """
     def register(self):
         pass
-    """ List users that match the wildcard "text" """
+    """ 
+    List users that match the wildcard "text" 
+    :param text: The wildcard string
+
+    :return result from server with list of users.
+    """
     def list_users(self, text):
-        pass
-    """ List groups that match the wildcard "text" """
+    """ 
+    List groups that match the wildcard "text" 
+    :param text: The wildcard string
+
+    :return result from server with list of groups.
+    """
     def list_groups(self, text):
         pass
-    """ Get all messages to the current user """
+
+    """ 
+    Get all messages to the current user
+
+    :return result from server with unread messages.
+    """
     def get(self):
         pass
-    """ Send "message" to "username" - 'username' can be a groupname or username"""
+
+    """ 
+    Send "message" to "username" - 'username' can be a groupname or username
+    :param username: String of user/group to send message to
+    :param message: Message string to be sent
+
+    :return result from server indicating success/failure
+    """
     def send_group(self, username, message):
         pass
-    """ Create a group called "groupanme" with "usernames" in it """
+    """ 
+    Create a group called "groupanme" with "usernames" in it 
+    :param groupname: String with the name of the group to be made
+    :param usernames: List of users to be in this group.
+    :return result from server indicating success/failure
+    """
     def group(self, groupname, usernames):
         pass
-    """ Delete the current user (and log out). """
+    """ 
+    Delete the current user (and log out). 
+    :return result from server indicating success/failure
+    """
     def delete(self):
         pass
