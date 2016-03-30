@@ -10,7 +10,14 @@ def sendRequest(command_type):
     """ 
     A decorator to wrap requests sent to the server. Used by the @sendRequest(command_type) construct in python
     
-    :param command_type: the command type (0-7) as defined in the design documentation
+    :param command_type: the command type (0-6) as defined in the design documentation
+        0 corresponds to registering a new user, 
+        1 to listing accounts, 
+        2 to creating a group, 
+        3 to listing a group, 
+        4 to sending a message, 
+        5 to getting all messages, 
+        6 to deleting an account
     :return: a high-level function that is used as a decoratar by the python API
     """
     def wrap(f):
@@ -39,6 +46,14 @@ class WireHandler(BaseHandler):
             + bytearray(self.password))
 
     def send_generic(self, name, message, is_group):
+        """
+        Helper function for sending messages. This can be used to send a message to
+        either a group or user.
+        :param name, the name of the user/group sending to
+        :param message, the message being sent
+        :param is_group, a boolean indicating whether it's a user or group being sent to.
+        
+        """
         return (self.username_bytes()
         + (bytearray([1]) if is_group else bytearray([0]))
         + struct.pack("I", len(name))
