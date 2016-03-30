@@ -46,8 +46,8 @@ class WireHandler(BaseHandler):
         + struct.pack("I", len(message))
         + bytearray(message))
 
-    # The following functions overwrite the abstract functions in BaseHandler
-    
+    # The following functions overwrite the abstract functions in BaseHandler. See
+    # basehandler for detailed function documentation.
     @sendRequest(0)
     def register(self):
         return self.username_bytes()

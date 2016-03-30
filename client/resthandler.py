@@ -57,7 +57,7 @@ class RestHandler(BaseHandler):
         print requests.post(REQUEST_URL + '/users/' + name + '/messages', data=json.dumps(self.req_dict({ 'message': message }))).text
 
     # The following functions overwrite basehandler and make a request to the
-    # server.
+    # server. See BaseHandler for in-depth function documentation.
     @sendRequest('/users', 'POST')
     def register(self):
         return self.req_dict()
