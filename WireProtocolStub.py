@@ -23,6 +23,11 @@ class WireProtocolStub:
 
     # Takes in a string representation of http binary field, and the path
     # it came from.
+    # :param self: current object
+    # :param path: request path the object was received from
+    # :param request: the data contained in the http request
+    # :return A request object with the appropriate fields filled out based on
+    #   operation the user wanted to perform
     def decode(self, path, request):
         bytes = request.data
         
@@ -160,6 +165,10 @@ class WireProtocolStub:
     Encode the response, which is always just the response field, as:
     4 bytes for 0 or 1, 0 if success, 1 if failure, the length of the
     response as a 4 byte integer, and then the bytes of the response itself.
+    :param self: current object
+    :param response: the string response from the server
+    :return A binary encoding of the response string and a boolean of whether
+    the operation was sucessful
     """
     def encode(self, response):
         s = response["success"]
